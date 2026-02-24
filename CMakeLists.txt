@@ -7,19 +7,24 @@ set(CMAKE_CXX_MODULE_STD 1)
 
 project(mcpplibs-templates VERSION 1.0.0 LANGUAGES CXX)
 
-# Library target
+# Library
 add_library(mcpplibs-templates STATIC)
+
+file(GLOB_RECURSE MODULE_SOURCES "src/*.cppm")
 
 target_sources(mcpplibs-templates
     PUBLIC
         FILE_SET CXX_MODULES FILES
-        src/templates.cppm
+        ${MODULE_SOURCES}
 )
 
-# Test executable
-add_executable(tests tests/main.cpp)
-target_link_libraries(tests PRIVATE mcpplibs-templates)
+# Test
+add_executable(templates_test tests/main.cpp)
+target_link_libraries(templates_test PRIVATE mcpplibs-templates)
 
-# Enable testing
 enable_testing()
-add_test(NAME mcpplibs-templates-test COMMAND tests)
+add_test(NAME mcpplibs-templates-test COMMAND templates_test)
+
+# Example
+add_executable(basic examples/basic.cpp)
+target_link_libraries(basic PRIVATE mcpplibs-templates)
