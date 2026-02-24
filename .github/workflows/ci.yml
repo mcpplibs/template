@@ -5,10 +5,19 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-linux:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,7 +44,8 @@ jobs:
       - name: Build
         run: |
           export PATH=/home/xlings/.xlings_data/bin:$PATH
-          xmake -y -vv
+          xmake f -m release -y
+          xmake -j$(nproc)
 
       - name: Test
         run: |
@@ -48,27 +58,31 @@ jobs:
           xmake run basic
 
   build-macos:
-    runs-on: macos-latest
+    runs-on: macos-14
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup xmake
-        uses: xmake-io/github-action-setup-xmake@v1
-        with:
-          xmake-version: latest
-          package-cache: true
-
-      - name: Install LLVM 20
-        run: brew install llvm@20
+      - name: Install dependencies
+        run: brew install xmake llvm@20
 
       - name: Build
         run: |
-          xmake f --toolchain=llvm --sdk=/opt/homebrew/opt/llvm@20
-          xmake -y -vv
+          export PATH=/opt/homebrew/opt/llvm@20/bin:$PATH
+          xmake f --toolchain=llvm --sdk=/opt/homebrew/opt/llvm@20 -y
+          xmake -m release -y
+          xmake -j$(sysctl -n hw.ncpu)
+
+      - name: Test
+        run: xmake run templates_test
+
+      - name: Run examples
+        run: xmake run basic
 
   build-windows:
     runs-on: windows-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -80,7 +94,9 @@ jobs:
           package-cache: true
 
       - name: Build
-        run: xmake -y -vv
+        run: |
+          xmake f -m release -y
+          xmake -j$env:NUMBER_OF_PROCESSORS
 
       - name: Test
         run: xmake run templates_test
