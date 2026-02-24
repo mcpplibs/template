@@ -43,7 +43,7 @@ jobs:
       - name: Run tests
         run: |
           export PATH=/home/xlings/.xlings_data/bin:$PATH
-          xmake run -y -vv templates_test
+          xmake run templates_test
 
       - name: Create release package
         run: |
@@ -73,7 +73,7 @@ jobs:
         run: |
           export PATH=/opt/homebrew/opt/llvm@20/bin:$PATH
           xmake f -p macosx -m release --toolchain=llvm --sdk=/opt/homebrew/opt/llvm@20 -y -vv
-          xmake -y -vv build mcpplibs-templates -j$(sysctl -n hw.ncpu)
+          xmake -y -vv -j$(sysctl -n hw.ncpu)
 
       - name: Create release package
         run: |
@@ -107,7 +107,7 @@ jobs:
           xmake -y -vv -j$env:NUMBER_OF_PROCESSORS
 
       - name: Run tests
-        run: xmake run -y -vv templates_test
+        run: xmake run templates_test
 
       - name: Create release package
         shell: pwsh

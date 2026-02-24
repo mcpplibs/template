@@ -50,12 +50,12 @@ jobs:
       - name: Test
         run: |
           export PATH=/home/xlings/.xlings_data/bin:$PATH
-          xmake run -y -vv templates_test
+          xmake run templates_test
 
       - name: Run examples
         run: |
           export PATH=/home/xlings/.xlings_data/bin:$PATH
-          xmake run -y -vv basic
+          xmake run basic
 
   build-macos:
     runs-on: macos-14
@@ -71,7 +71,7 @@ jobs:
         run: |
           export PATH=/opt/homebrew/opt/llvm@20/bin:$PATH
           xmake f --toolchain=llvm --sdk=/opt/homebrew/opt/llvm@20 -m release -y -vv
-          xmake -y -vv build mcpplibs-templates -j$(sysctl -n hw.ncpu)
+          xmake -y -vv -j$(sysctl -n hw.ncpu)
 
   build-windows:
     runs-on: windows-latest
@@ -92,7 +92,7 @@ jobs:
           xmake -y -vv -j$env:NUMBER_OF_PROCESSORS
 
       - name: Test
-        run: xmake run -y -vv templates_test
+        run: xmake run templates_test
 
       - name: Run examples
-        run: xmake run -y -vv basic
+        run: xmake run basic
