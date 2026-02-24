@@ -44,18 +44,18 @@ jobs:
       - name: Build
         run: |
           export PATH=/home/xlings/.xlings_data/bin:$PATH
-          xmake f -m release -y
-          xmake -j$(nproc)
+          xmake f -m release -y -vv
+          xmake -y -vv -j$(nproc)
 
       - name: Test
         run: |
           export PATH=/home/xlings/.xlings_data/bin:$PATH
-          xmake run templates_test
+          xmake -y -vv run templates_test
 
       - name: Run examples
         run: |
           export PATH=/home/xlings/.xlings_data/bin:$PATH
-          xmake run basic
+          xmake -y -vv run basic
 
   build-macos:
     runs-on: macos-14
@@ -70,15 +70,14 @@ jobs:
       - name: Build
         run: |
           export PATH=/opt/homebrew/opt/llvm@20/bin:$PATH
-          xmake f --toolchain=llvm --sdk=/opt/homebrew/opt/llvm@20 -y
-          xmake -m release -y
-          xmake -j$(sysctl -n hw.ncpu)
+          xmake f --toolchain=llvm --sdk=/opt/homebrew/opt/llvm@20 -m release -y -vv
+          xmake -y -vv -j$(sysctl -n hw.ncpu)
 
       - name: Test
-        run: xmake run templates_test
+        run: xmake -y -vv run templates_test
 
       - name: Run examples
-        run: xmake run basic
+        run: xmake -y -vv run basic
 
   build-windows:
     runs-on: windows-latest
@@ -95,11 +94,11 @@ jobs:
 
       - name: Build
         run: |
-          xmake f -m release -y
-          xmake -j$env:NUMBER_OF_PROCESSORS
+          xmake f -m release -y -vv
+          xmake -y -vv -j$env:NUMBER_OF_PROCESSORS
 
       - name: Test
-        run: xmake run templates_test
+        run: xmake -y -vv run templates_test
 
       - name: Run examples
-        run: xmake run basic
+        run: xmake -y -vv run basic

@@ -37,13 +37,13 @@ jobs:
       - name: Build with xmake
         run: |
           export PATH=/home/xlings/.xlings_data/bin:$PATH
-          xmake f -m release -y
-          xmake -j$(nproc)
+          xmake f -m release -y -vv
+          xmake -y -vv -j$(nproc)
 
       - name: Run tests
         run: |
           export PATH=/home/xlings/.xlings_data/bin:$PATH
-          xmake run templates_test
+          xmake -y -vv run templates_test
 
       - name: Create release package
         run: |
@@ -72,11 +72,11 @@ jobs:
       - name: Build with xmake (LLVM 20)
         run: |
           export PATH=/opt/homebrew/opt/llvm@20/bin:$PATH
-          xmake f -p macosx -m release --toolchain=llvm --sdk=/opt/homebrew/opt/llvm@20 -y
-          xmake -j$(sysctl -n hw.ncpu)
+          xmake f -p macosx -m release --toolchain=llvm --sdk=/opt/homebrew/opt/llvm@20 -y -vv
+          xmake -y -vv -j$(sysctl -n hw.ncpu)
 
       - name: Run tests
-        run: xmake run templates_test
+        run: xmake -y -vv run templates_test
 
       - name: Create release package
         run: |
@@ -106,11 +106,11 @@ jobs:
 
       - name: Build with xmake
         run: |
-          xmake f -m release -y
-          xmake -j$env:NUMBER_OF_PROCESSORS
+          xmake f -m release -y -vv
+          xmake -y -vv -j$env:NUMBER_OF_PROCESSORS
 
       - name: Run tests
-        run: xmake run templates_test
+        run: xmake -y -vv run templates_test
 
       - name: Create release package
         shell: pwsh
