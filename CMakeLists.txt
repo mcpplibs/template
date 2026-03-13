@@ -2,6 +2,46 @@ set(CMAKE_VERSION_MINIMUM 3.31)
 cmake_minimum_required(VERSION ${CMAKE_VERSION_MINIMUM})
 message(STATUS "Cmake version: ${CMAKE_VERSION} (>= ${CMAKE_VERSION_MINIMUM} ✓)")
 
+# Compiler version check
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    if (WIN32)
+        message(FATAL_ERROR
+                "Detected the use of MinGW GCC compiler on Windows.\n"
+                "MinGW GCC has serious compatibility issues with C++23 modules (import std).\n"
+                "Please switch to Clang (such as llvm-mingw) or MSVC for compilation."
+        )
+    endif ()
+    set(COMPILER_GCC_VERSION_MINIMUM 14.0)
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS ${COMPILER_GCC_VERSION_MINIMUM})
+        message(FATAL_ERROR
+                "GCC version too old for C++ Modules.\n"
+                "GCC version: ${CMAKE_CXX_COMPILER_VERSION} (>= ${COMPILER_GCC_VERSION_MINIMUM} X)"
+        )
+    else()
+        message(STATUS "GCC version: ${CMAKE_CXX_COMPILER_VERSION} (>= ${COMPILER_GCC_VERSION_MINIMUM} ✓)")
+    endif()
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(COMPILER_CLANG_VERSION_MINIMUM 17.0)
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS ${COMPILER_CLANG_VERSION_MINIMUM})
+        message(FATAL_ERROR
+                "Clang version too old for C++ Modules.\n"
+                "Clang version: ${CMAKE_CXX_COMPILER_VERSION} (>= ${COMPILER_CLANG_VERSION_MINIMUM} X)"
+        )
+    else()
+        message(STATUS "Clang version: ${CMAKE_CXX_COMPILER_VERSION} (>= ${COMPILER_CLANG_VERSION_MINIMUM} ✓)")
+    endif()
+elseif (MSVC)
+    set(COMPILER_MSVC_VERSION_MINIMUM 1934)
+    if (MSVC_VERSION LESS ${COMPILER_MSVC_VERSION_MINIMUM})
+        message(FATAL_ERROR
+                "MSVC version too old for C++ Modules.\n"
+                "MSVC version: ${CMAKE_CXX_COMPILER_VERSION} (>= ${COMPILER_MSVC_VERSION_MINIMUM} X)"
+        )
+    else()
+        message(STATUS "MSVC version: ${MSVC_VERSION} (>= ${COMPILER_MSVC_VERSION_MINIMUM} ✓)")
+    endif()
+endif()
+
 # https://github.com/Kitware/CMake/blob/master/Help/dev/experimental.rst
 set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "a9e1cf81-9932-4810-974b-6eccaf14e457")
 set(CMAKE_CXX_STANDARD 23)
