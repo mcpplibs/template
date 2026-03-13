@@ -42,8 +42,27 @@ elseif (MSVC)
     endif()
 endif()
 
+# Find CMAKE_EXPERIMENTAL_CXX_IMPORT_STD UUID
 # https://github.com/Kitware/CMake/blob/master/Help/dev/experimental.rst
 set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "a9e1cf81-9932-4810-974b-6eccaf14e457")
+string(REGEX REPLACE "-[A-Za-z0-9_]+$" "" CMAKE_VER_FULL "${CMAKE_VERSION}")
+file(READ "${CMAKE_CURRENT_LIST_DIR}/cmake_import_std_uuids.json" _json_str)
+string(REGEX MATCH "\"${CMAKE_VER_FULL}\"[ \t]*:[ \t]*\"([0-9a-fA-F\\-]+)\"" _match "${_json_str}")
+if(_match)
+    string(REGEX REPLACE ".*\"${CMAKE_VER_FULL}\"[ \t]*:[ \t]*\"([0-9a-fA-F\\-]+)\".*" "\\1" _uuid "${_match}")
+    message(STATUS "Detected CMake version ${CMAKE_VER_FULL}, using import_std UUID = ${_uuid}")
+    set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "${_uuid}")
+else()
+    string(REGEX MATCH "\"default\"[ \t]*:[ \t]*\"([0-9a-fA-F\\-]+)\"" _default_match "${_json_str}")
+
+    if(_default_match)
+        string(REGEX REPLACE ".*\"default\"[ \t]*:[ \t]*\"([0-9a-fA-F\\-]+)\".*" "\\1" _uuid "${_default_match}")
+        message(STATUS "CMake version ${CMAKE_VER_FULL} not found in mapping, forcing default UUID = ${_uuid}")
+    else()
+        message(FATAL_ERROR "Default UUID not found in cmake_import_std_uuids.json — cannot proceed without import std configuration")
+    endif()
+endif()
+
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_MODULE_STD 1)
 
