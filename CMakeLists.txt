@@ -18,13 +18,15 @@ target_sources(mcpplibs-templates
         ${MODULE_SOURCES}
 )
 
-# Test
-add_executable(templates_test tests/main.cpp)
-target_link_libraries(templates_test PRIVATE mcpplibs-templates)
-
-enable_testing()
-add_test(NAME mcpplibs-templates-test COMMAND templates_test)
-
 # Example
 add_executable(basic examples/basic.cpp)
 target_link_libraries(basic PRIVATE mcpplibs-templates)
+
+# Test
+option(BUILD_TESTING "Build the testing directories" ON)
+
+if (BUILD_TESTING)
+    include(CTest)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
