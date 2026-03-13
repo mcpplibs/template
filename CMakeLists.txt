@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 4.0.2)
+set(CMAKE_VERSION_MINIMUM 3.31)
+cmake_minimum_required(VERSION ${CMAKE_VERSION_MINIMUM})
+message(STATUS "Cmake version: ${CMAKE_VERSION} (>= ${CMAKE_VERSION_MINIMUM} ✓)")
 
 # https://github.com/Kitware/CMake/blob/master/Help/dev/experimental.rst
 set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "a9e1cf81-9932-4810-974b-6eccaf14e457")
