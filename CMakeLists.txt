@@ -32,13 +32,13 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     endif()
 elseif (MSVC)
     set(COMPILER_MSVC_VERSION_MINIMUM 1934)
-    if (MSVC_VERSION LESS ${COMPILER_MSVC_VERSION_MINIMUM})
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS ${COMPILER_MSVC_VERSION_MINIMUM})
         message(FATAL_ERROR
                 "MSVC version too old for C++ Modules.\n"
                 "MSVC version: ${CMAKE_CXX_COMPILER_VERSION} (>= ${COMPILER_MSVC_VERSION_MINIMUM} X)"
         )
     else()
-        message(STATUS "MSVC version: ${MSVC_VERSION} (>= ${COMPILER_MSVC_VERSION_MINIMUM} ✓)")
+        message(STATUS "MSVC version: ${CMAKE_CXX_COMPILER_VERSION} (>= ${COMPILER_MSVC_VERSION_MINIMUM} ✓)")
     endif()
 endif()
 
