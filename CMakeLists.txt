@@ -62,17 +62,20 @@ else()
     endif()
 endif()
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_MODULE_STD 1)
+set(PROJECT_NAME mcpplibs-templates)
+set(PROJECT_VERSION 1.0.0)
+project(${PROJECT_NAME} VERSION ${PROJECT_VERSION} LANGUAGES CXX)
 
-project(mcpplibs-templates VERSION 1.0.0 LANGUAGES CXX)
+set(CMAKE_CXX_MODULE_STD 1)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Library
-add_library(mcpplibs-templates STATIC)
+add_library(${PROJECT_NAME} STATIC)
 
 file(GLOB_RECURSE MODULE_SOURCES "src/*.cppm")
 
-target_sources(mcpplibs-templates
+target_sources(${PROJECT_NAME}
     PUBLIC
         FILE_SET CXX_MODULES FILES
         ${MODULE_SOURCES}
