@@ -1,6 +1,6 @@
 set(CMAKE_VERSION_MINIMUM 3.31)
 cmake_minimum_required(VERSION ${CMAKE_VERSION_MINIMUM})
-message(STATUS "Cmake version: ${CMAKE_VERSION} (>= ${CMAKE_VERSION_MINIMUM} ✓)")
+message(STATUS "CMake version: ${CMAKE_VERSION} (>= ${CMAKE_VERSION_MINIMUM} ✓)")
 
 # Compiler version check
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
