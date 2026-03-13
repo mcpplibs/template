@@ -63,9 +63,7 @@ else()
     endif()
 endif()
 
-set(PROJECT_NAME mcpplibs-templates)
-set(PROJECT_VERSION 1.0.0)
-project(${PROJECT_NAME} VERSION ${PROJECT_VERSION} LANGUAGES CXX)
+project(mcpplibs-templates VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_MODULE_STD 1)
 set(CMAKE_CXX_STANDARD 23)
@@ -84,7 +82,7 @@ target_sources(${PROJECT_NAME}
 
 # Example
 add_executable(basic examples/basic.cpp)
-target_link_libraries(basic PRIVATE mcpplibs-templates)
+target_link_libraries(basic PRIVATE ${PROJECT_NAME})
 
 # Test
 option(BUILD_TESTING "Build the testing directories" ON)
