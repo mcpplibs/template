@@ -1,9 +1,11 @@
-# xmake
-.xmake
-build
+# mcpp
+target/
+gcm.cache/
+mcpp.lock
+compile_commands.json
 
-# xlings
-.xlings
+# xlings project environment
+.xlings/
 
 # Compiled Object files
 *.slo
@@ -40,9 +42,3 @@ build
 # Debug information files
 *.dwo
 *.d
-
-# CMake
-CMakeCache.txt
-CMakeFiles/
-cmake_install.cmake
-Makefile

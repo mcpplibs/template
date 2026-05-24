@@ -119,41 +119,46 @@ void Error::test() {
 
 ## 项目环境配置
 
-安装 xlings 包管理器后，获取 GCC 15 工具链：
+安装 xlings 包管理器后，安装本模板声明的 mcpp 工具：
 
 #### Linux/MacOS
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/d2learn/xlings/refs/heads/main/tools/other/quick_install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/openxlings/xlings/refs/heads/main/tools/other/quick_install.sh | bash
 ```
 
 #### Windows - PowerShell
 
 ```bash
-irm https://raw.githubusercontent.com/d2learn/xlings/refs/heads/main/tools/other/quick_install.ps1 | iex
+irm https://raw.githubusercontent.com/openxlings/xlings/refs/heads/main/tools/other/quick_install.ps1 | iex
 ```
 
-然后安装工具链(仅linux, 其中windows默认用msvc)：
+然后安装本模板声明的项目工具：
 
 ```bash
-xlings install gcc@15 -y
+xlings install
+export PATH="$PWD/.xlings/subos/_/bin:$PATH"
+mcpp --version
 ```
 
-> xlings详细信息可参考 [xlings](https://github.com/d2learn/xlings) 文档。
+> xlings详细信息可参考 [xlings](https://github.com/openxlings/xlings) 文档。
 
 ## 示例项目创建
 
 参考本仓库 `src/` 目录结构：
 
-- `xmake.lua`：配置 `set_languages("c++23")`、`set_policy("build.c++.modules", true)`
-- `add_files("main.cpp")`、`add_files("**.cppm")` 添加源文件
-- 可执行目标与静态库目标分离（如 `mcpp-style-ref` 主程序、`error` 静态库）
+- `.xlings.json`：声明项目工具环境
+- `mcpp.toml`：声明 `[package]` 与测试依赖；简单库目标可由 mcpp 从 `src/*.cppm` 自动推断
+- `src/mylib.cppm`：库主模块接口，默认 `export module mcpplibs.mylib;`
+- `tests/mylib_test.cpp`：`mcpp test` 自动发现的 gtest 测试；不要定义 `main()`
+- `examples/basic/`：独立 mcpp consumer 包，通过 path 依赖引用根库
 
 构建：
 
 ```bash
-xmake build
-xmake run
+mcpp build
+mcpp test
+cd examples/basic && mcpp run
 ```
 
 ## 适用场景
@@ -168,4 +173,4 @@ xmake run
 - mcpp-style-ref 仓库：[github.com/mcpp-community/mcpp-style-ref](https://github.com/mcpp-community/mcpp-style-ref)
     - 项目说明：[../../README.md](../../README.md)
     - 示例项目：[src/](../../../src)
-- xlings 包管理器：[github.com/d2learn/xlings](https://github.com/d2learn/xlings)
+- xlings 包管理器：[github.com/openxlings/xlings](https://github.com/openxlings/xlings)

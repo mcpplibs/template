@@ -1,0 +1,8 @@
+[package]
+name        = "mylib-basic"
+version     = "0.1.0"
+description = "Basic consumer for the mcpplibs.mylib module"
+license     = "Apache-2.0"
+
+[dependencies.mcpplibs]
+mylib = { path = "../.." }

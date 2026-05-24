@@ -1,0 +1,11 @@
+[package]
+namespace   = "mcpplibs"
+name        = "mylib"
+version     = "0.1.0"
+description = "A small C++23 module library scaffold for mcpplibs"
+license     = "Apache-2.0"
+authors     = ["mcpplibs"]
+repo        = "https://github.com/mcpplibs/mylib"
+
+[dev-dependencies]
+gtest = "1.15.2"
